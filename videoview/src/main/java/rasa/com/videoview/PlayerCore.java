@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.squareup.picasso.Picasso;
 
 class PlayerCore extends RelativeLayout {
 
@@ -36,6 +38,8 @@ class PlayerCore extends RelativeLayout {
     private TextView textRetry;
 
     boolean hasError = false;
+
+    private ImageView imgThumbnail;
 
 
     public PlayerCore(Context context) {
@@ -70,6 +74,7 @@ class PlayerCore extends RelativeLayout {
         progressBar = findViewById(R.id.progressBar);
         relWarning = findViewById(R.id.rel_warning);
         textRetry = findViewById(R.id.text_retry);
+        imgThumbnail = findViewById(R.id.img_holder_thumbnail);
 
     }
 
@@ -98,9 +103,19 @@ class PlayerCore extends RelativeLayout {
         releasePlayer();
     }
 
-    public void loadVideo(final String url) {
+
+    public void loadVideo(final String url,final String imageUrl) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            imgThumbnail.setVisibility(VISIBLE);
+            Picasso.get().load(imageUrl).into(imgThumbnail);
+        } else {
+            imgThumbnail.setVisibility(GONE);
+        }
+
+
 
         if (url == null) return;
+
 
         if (player == null) {
             videoUrl = url;
@@ -124,7 +139,9 @@ class PlayerCore extends RelativeLayout {
                 public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                     super.onPlayerStateChanged(playWhenReady, playbackState);
                     if (!hasError) {
+
                         relWarning.setVisibility(GONE);
+
 
                         if (videoListener != null) {
                             if (playbackState == Player.STATE_ENDED) {
@@ -138,6 +155,7 @@ class PlayerCore extends RelativeLayout {
                             progressBar.setVisibility(VISIBLE);
                         } else {
                             progressBar.setVisibility(GONE);
+                            imgThumbnail.setVisibility(GONE);
                         }
                     }
 
@@ -156,7 +174,7 @@ class PlayerCore extends RelativeLayout {
                         public void onClick(View view) {
                             videoUrl = "";
                             releasePlayer();
-                            loadVideo(url);
+                            loadVideo(url,imageUrl);
                         }
                     });
 
@@ -170,7 +188,7 @@ class PlayerCore extends RelativeLayout {
 
         } else if (!url.equals(videoUrl)) {
             releasePlayer();
-            loadVideo(url);
+            loadVideo(url,imageUrl);
             return;
         }
 
@@ -183,8 +201,8 @@ class PlayerCore extends RelativeLayout {
                 (SurfaceView) playerView.getVideoSurfaceView());
 
         playerView.setPlayer(player);
-
     }
+
 
     private void setVideoListener(VideoListener videoListener) {
         this.videoListener = videoListener;
@@ -194,6 +212,7 @@ class PlayerCore extends RelativeLayout {
 
         videoUrl = "";
         hasError = false;
+        imgThumbnail.setVisibility(GONE);
 
         if (player != null) {
             player.release();

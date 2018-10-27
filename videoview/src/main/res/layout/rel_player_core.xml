@@ -5,11 +5,23 @@
     android:background="#000000"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/core_video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ></com.google.android.exoplayer2.ui.PlayerView>
+        android:background="#000000"
+        >
+
+    </com.google.android.exoplayer2.ui.PlayerView>
+
+    <ImageView
+        android:id="@+id/img_holder_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        />
 
     <ProgressBar
         android:id="@+id/progressBar"

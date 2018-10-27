@@ -11,6 +11,7 @@ public class CvideoView extends RelativeLayout {
 
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     private String title="";
+    private String ImageUrl;
 
     public CvideoView(Context context) {
         super(context);
@@ -50,14 +51,16 @@ public class CvideoView extends RelativeLayout {
         this.title = title;
     }
 
-    public void loadVideo(String videoUrl,String title) {
-        setTitle(title);
-        PlayerCore.getInstance(getContext()).loadVideo(videoUrl);
+    public void setImageUrl(String imageUrl) {
+        ImageUrl = imageUrl;
     }
 
-    public void loadVideo(String videoUrl) {
-        PlayerCore.getInstance(getContext()).loadVideo(videoUrl);
+    public void loadVideo(String videoUrl, String title,String imageUrl) {
+        setTitle(title);
+        setImageUrl(imageUrl);
+        PlayerCore.getInstance(getContext()).loadVideo(videoUrl,imageUrl);
     }
+
 
 
     public void onResume(VideoListener videoListener) {

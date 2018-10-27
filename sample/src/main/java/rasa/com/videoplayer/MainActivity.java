@@ -21,14 +21,14 @@ public class MainActivity extends AppCompatActivity {
 //        cvideoView.setTitle("تست ویدئو");
 //        cvideoView.loadVideo("http://79.175.155.143/jamak//Multimedia/636753023853348093.WhatsApp%20Video%202018-10-15%20at%2002.59.28.mp4");
 
-        cvideoView.loadVideo("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4","تست ویدئو");
+        cvideoView.loadVideo("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4","تست ویدئو","http://www.templatesperfect.com/wp-content/uploads/2018/04/Learn-Codding-600x292.jpg");
 
         Button btnChangeVieo=findViewById(R.id.btn_change_video);
         btnChangeVieo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cvideoView.setTitle("تست ویدئو ۲");
-                cvideoView.loadVideo("http://www.html5videoplayer.net/videos/toystory.mp4");
+                cvideoView.loadVideo("http://www.html5videoplayer.net/videos/toystory.mp4","",null);
 
             }
         });
