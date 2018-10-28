@@ -2,6 +2,7 @@ package rasa.com.videoview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,7 +31,7 @@ public class CvideoView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.rel_video_player, this);
-
+        PlayerCore.getInstance(getContext()).onDestroy();
     }
 
     private void attachVideoHere(){
@@ -58,10 +59,14 @@ public class CvideoView extends RelativeLayout {
     public void loadVideo(String videoUrl, String title,String imageUrl) {
         setTitle(title);
         setImageUrl(imageUrl);
-        PlayerCore.getInstance(getContext()).loadVideo(videoUrl,imageUrl);
+        PlayerCore.getInstance(getContext()).loadVideo(Uri.parse(videoUrl),imageUrl);
     }
 
-
+    public void loadVideo(Uri videoUri, String title,String imageUrl) {
+        setTitle(title);
+        setImageUrl(imageUrl);
+        PlayerCore.getInstance(getContext()).loadVideo(videoUri,imageUrl);
+    }
 
     public void onResume(VideoListener videoListener) {
         attachVideoHere();

@@ -21,14 +21,17 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 
 class PlayerCore extends RelativeLayout {
 
 
     private SimpleExoPlayer player;
-    private String videoUrl;
+    private Uri videoUri;
     private static PlayerCore instance;
     private PlayerView playerView;
 
@@ -74,7 +77,7 @@ class PlayerCore extends RelativeLayout {
         progressBar = findViewById(R.id.progressBar);
         relWarning = findViewById(R.id.rel_warning);
         textRetry = findViewById(R.id.text_retry);
-        imgThumbnail = findViewById(R.id.img_holder_thumbnail);
+        imgThumbnail = findViewById(R.id.thumbnail);
 
     }
 
@@ -103,8 +106,8 @@ class PlayerCore extends RelativeLayout {
         releasePlayer();
     }
 
+    public void loadVideo(final Uri uri, final String imageUrl) {
 
-    public void loadVideo(final String url,final String imageUrl) {
         if (imageUrl != null && !imageUrl.isEmpty()) {
             imgThumbnail.setVisibility(VISIBLE);
             Picasso.get().load(imageUrl).into(imgThumbnail);
@@ -113,17 +116,14 @@ class PlayerCore extends RelativeLayout {
         }
 
 
-
-        if (url == null) return;
+        if (uri == null) return;
 
 
         if (player == null) {
-            videoUrl = url;
+            videoUri = uri;
             player = ExoPlayerFactory.newSimpleInstance(
                     new DefaultRenderersFactory(getContext()),
                     new DefaultTrackSelector(), new DefaultLoadControl());
-
-            Uri uri = Uri.parse(videoUrl);
 
             MediaSource mediaSource = buildMediaSource(uri);
             player.prepare(mediaSource, false, false);
@@ -154,13 +154,13 @@ class PlayerCore extends RelativeLayout {
                         if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_BUFFERING) {
                             progressBar.setVisibility(VISIBLE);
                         } else {
-
                             progressBar.setVisibility(GONE);
 
-                            if((videoUrl!=null && videoUrl.isEmpty()) && (videoUrl.toLowerCase().contains(".mp3") ||videoUrl.toLowerCase().contains(".aar"))){
 
-                            }else{
-                            imgThumbnail.setVisibility(GONE);
+                            if ((videoUri != null && videoUri.getPath().isEmpty()) && (videoUri.getPath().toLowerCase().contains(".mp3") || videoUri.getPath().toLowerCase().contains(".aar"))) {
+                                imgThumbnail.setVisibility(VISIBLE);
+                            } else {
+                                imgThumbnail.setVisibility(GONE);
                             }
                         }
                     }
@@ -179,9 +179,9 @@ class PlayerCore extends RelativeLayout {
                     textRetry.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            videoUrl = "";
+                            videoUri = null;
                             releasePlayer();
-                            loadVideo(url,imageUrl);
+                            loadVideo(uri, imageUrl);
                         }
                     });
 
@@ -193,9 +193,9 @@ class PlayerCore extends RelativeLayout {
             });
 
 
-        } else if (!url.equals(videoUrl)) {
+        } else if (!uri.equals(videoUri)) {
             releasePlayer();
-            loadVideo(url,imageUrl);
+            loadVideo(uri, imageUrl);
             return;
         }
 
@@ -210,14 +210,13 @@ class PlayerCore extends RelativeLayout {
         playerView.setPlayer(player);
     }
 
-
     private void setVideoListener(VideoListener videoListener) {
         this.videoListener = videoListener;
     }
 
     private void releasePlayer() {
 
-        videoUrl = "";
+        videoUri = null;
         hasError = false;
         imgThumbnail.setVisibility(GONE);
 
@@ -228,9 +227,21 @@ class PlayerCore extends RelativeLayout {
     }
 
     private MediaSource buildMediaSource(Uri uri) {
+        DataSource.Factory dataSourceFactory = null;
+
+       /* if (uri.getHost().isEmpty()) {
+            dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "Music Player"), null);
+        } else {
+            dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer-codelab");
+        }*/
+
+        dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "Application Name"), new DefaultBandwidthMeter());
+
         return new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory("exoplayer-codelab")).
+                dataSourceFactory).
                 createMediaSource(uri);
+
+
     }
 
 }
