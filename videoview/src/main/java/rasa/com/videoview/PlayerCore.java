@@ -154,8 +154,14 @@ class PlayerCore extends RelativeLayout {
                         if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_BUFFERING) {
                             progressBar.setVisibility(VISIBLE);
                         } else {
+
                             progressBar.setVisibility(GONE);
+
+                            if((videoUrl!=null && videoUrl.isEmpty()) && (videoUrl.toLowerCase().contains(".mp3") ||videoUrl.toLowerCase().contains(".aar"))){
+
+                            }else{
                             imgThumbnail.setVisibility(GONE);
+                            }
                         }
                     }
 
@@ -167,6 +173,7 @@ class PlayerCore extends RelativeLayout {
                     hasError = true;
 
                     relWarning.setVisibility(VISIBLE);
+                    imgThumbnail.setVisibility(VISIBLE);
                     progressBar.setVisibility(GONE);
 
                     textRetry.setOnClickListener(new OnClickListener() {

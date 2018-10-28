@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
         btnChangeVieo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cvideoView.setTitle("تست ویدئو ۲");
-                cvideoView.loadVideo("http://www.html5videoplayer.net/videos/toystory.mp4","",null);
+                cvideoView.loadVideo("https://storage.tarafdari.com/contents/user276468/content-sound/1.sedaye_baroon.mp3","صدای بارون","https://storage.tarafdari.com/contents/user276468/content-sound/sattar_-_sedaaye_baroon.jpg");
 
             }
         });
