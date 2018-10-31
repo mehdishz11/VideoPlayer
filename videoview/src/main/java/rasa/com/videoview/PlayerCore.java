@@ -157,7 +157,7 @@ class PlayerCore extends RelativeLayout {
                             progressBar.setVisibility(GONE);
 
 
-                            if ((videoUri != null && videoUri.getPath().isEmpty()) && (videoUri.getPath().toLowerCase().contains(".mp3") || videoUri.getPath().toLowerCase().contains(".aar"))) {
+                            if ((videoUri != null && !videoUri.getPath().isEmpty()) && (videoUri.getPath().toLowerCase().contains(".mp3") || videoUri.getPath().toLowerCase().contains(".aar"))) {
                                 imgThumbnail.setVisibility(VISIBLE);
                             } else {
                                 imgThumbnail.setVisibility(GONE);
