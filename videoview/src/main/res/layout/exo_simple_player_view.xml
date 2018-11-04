@@ -30,7 +30,9 @@
     <ImageView android:id="@id/exo_artwork"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        />
 
     <ImageView android:id="@+id/thumbnail"
         android:layout_width="match_parent"

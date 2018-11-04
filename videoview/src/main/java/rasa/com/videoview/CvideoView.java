@@ -12,7 +12,6 @@ public class CvideoView extends RelativeLayout {
 
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     private String title="";
-    private String ImageUrl;
 
     public CvideoView(Context context) {
         super(context);
@@ -52,21 +51,38 @@ public class CvideoView extends RelativeLayout {
         this.title = title;
     }
 
-    public void setImageUrl(String imageUrl) {
-        ImageUrl = imageUrl;
-    }
-
+    /**
+     * LoadVideo is deprecated use load(contentUrl,title,imageUrl) instant
+     *
+     * @deprecated use instant {@link #load(String, String, String)} instead.
+     */
+    @Deprecated
     public void loadVideo(String videoUrl, String title,String imageUrl) {
-        setTitle(title);
-        setImageUrl(imageUrl);
-        PlayerCore.getInstance(getContext()).loadVideo(Uri.parse(videoUrl),imageUrl);
+       load(videoUrl,title,imageUrl);
     }
 
+    /**
+     * LoadVideo is deprecated use load(contentUri,title,imageUrl) instant
+     *
+     * @deprecated use instant {@link #load(Uri, String, String)} instead.
+     */
+    @Deprecated
     public void loadVideo(Uri videoUri, String title,String imageUrl) {
-        setTitle(title);
-        setImageUrl(imageUrl);
-        PlayerCore.getInstance(getContext()).loadVideo(videoUri,imageUrl);
+      load(videoUri,title,imageUrl);
     }
+
+
+    public void load(String contentUrl, String title,String imageUrl) {
+        setTitle(title);
+        PlayerCore.getInstance(getContext()).loadVideo(Uri.parse(Tools.encodeUrl(contentUrl)),Tools.encodeUrl(imageUrl));
+    }
+
+
+    public void load(Uri contentUri, String title,String imageUrl) {
+        setTitle(title);
+        PlayerCore.getInstance(getContext()).loadVideo(contentUri,imageUrl);
+    }
+
 
     public void onResume(VideoListener videoListener) {
         attachVideoHere();

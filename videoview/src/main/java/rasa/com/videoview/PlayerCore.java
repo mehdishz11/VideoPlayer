@@ -31,7 +31,7 @@ class PlayerCore extends RelativeLayout {
 
 
     private SimpleExoPlayer player;
-    private Uri videoUri;
+    private Uri contentUri;
     private static PlayerCore instance;
     private PlayerView playerView;
 
@@ -43,6 +43,7 @@ class PlayerCore extends RelativeLayout {
     boolean hasError = false;
 
     private ImageView imgThumbnail;
+
 
 
     public PlayerCore(Context context) {
@@ -78,7 +79,6 @@ class PlayerCore extends RelativeLayout {
         relWarning = findViewById(R.id.rel_warning);
         textRetry = findViewById(R.id.text_retry);
         imgThumbnail = findViewById(R.id.thumbnail);
-
     }
 
     public void attachToViewGroup(RelativeLayout relParent) {
@@ -118,9 +118,8 @@ class PlayerCore extends RelativeLayout {
 
         if (uri == null) return;
 
-
         if (player == null) {
-            videoUri = uri;
+            contentUri = uri;
             player = ExoPlayerFactory.newSimpleInstance(
                     new DefaultRenderersFactory(getContext()),
                     new DefaultTrackSelector(), new DefaultLoadControl());
@@ -138,11 +137,9 @@ class PlayerCore extends RelativeLayout {
                 @Override
                 public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                     super.onPlayerStateChanged(playWhenReady, playbackState);
+
                     if (!hasError) {
-
                         relWarning.setVisibility(GONE);
-
-
                         if (videoListener != null) {
                             if (playbackState == Player.STATE_ENDED) {
                                 videoListener.onStopPlaying();
@@ -157,7 +154,7 @@ class PlayerCore extends RelativeLayout {
                             progressBar.setVisibility(GONE);
 
 
-                            if ((videoUri != null && !videoUri.getPath().isEmpty()) && (videoUri.getPath().toLowerCase().contains(".mp3") || videoUri.getPath().toLowerCase().contains(".aar"))) {
+                            if ((contentUri != null && !contentUri.getPath().isEmpty()) && (contentUri.getPath().toLowerCase().contains(".mp3") || contentUri.getPath().toLowerCase().contains(".aar"))) {
                                 imgThumbnail.setVisibility(VISIBLE);
                             } else {
                                 imgThumbnail.setVisibility(GONE);
@@ -179,7 +176,7 @@ class PlayerCore extends RelativeLayout {
                     textRetry.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            videoUri = null;
+                            contentUri = null;
                             releasePlayer();
                             loadVideo(uri, imageUrl);
                         }
@@ -193,7 +190,7 @@ class PlayerCore extends RelativeLayout {
             });
 
 
-        } else if (!uri.equals(videoUri)) {
+        } else if (!uri.equals(contentUri)) {
             releasePlayer();
             loadVideo(uri, imageUrl);
             return;
@@ -216,7 +213,7 @@ class PlayerCore extends RelativeLayout {
 
     private void releasePlayer() {
 
-        videoUri = null;
+        contentUri = null;
         hasError = false;
         imgThumbnail.setVisibility(GONE);
 

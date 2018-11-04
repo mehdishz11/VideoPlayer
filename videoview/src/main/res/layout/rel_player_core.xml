@@ -12,16 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#000000"
+        app:use_artwork="false"
         >
 
     </com.google.android.exoplayer2.ui.PlayerView>
-
-    <ImageView
-        android:id="@+id/img_holder_thumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        />
 
     <ProgressBar
         android:id="@+id/progressBar"
