@@ -30,9 +30,10 @@ public class MainActivity extends AppCompatActivity {
 //        cvideoView.loadVideo("http://79.175.155.143/jamak//Multimedia/636753023853348093.WhatsApp%20Video%202018-10-15%20at%2002.59.28.mp4");
 
 //        video sample
-          cvideoView.load("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4","تست ویدئو","http://www.templatesperfect.com/wp-content/uploads/2018/04/Learn-Codding-600x292.jpg");
+//          cvideoView.load("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4","تست ویدئو","http://www.templatesperfect.com/wp-content/uploads/2018/04/Learn-Codding-600x292.jpg");
 //        audio sample
-//        cvideoView.loadVideo("https://storage.tarafdari.com/contents/user276468/content-sound/1.sedaye_baroon.mp3","تست ویدئو","http://www.templatesperfect.com/wp-content/uploads/2018/04/Learn-Codding-600x292.jpg");
+
+        cvideoView.load("http://79.175.155.143/malmal//Multimedia/636769427119262745.بابابزرگ من.mp3","تست ویدئو","http://79.175.155.143/malmal//Multimedia/Pic/636770363690626981.636631011035472617.photo_2018-05-28_10-33-58.jpg");
 
         Button btnChangeVieo=findViewById(R.id.btn_change_video);
         btnChangeVieo.setOnClickListener(new View.OnClickListener() {
