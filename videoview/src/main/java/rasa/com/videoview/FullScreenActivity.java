@@ -26,6 +26,7 @@ public class FullScreenActivity extends AppCompatActivity {
         RelativeLayout relMain = findViewById(R.id.rel_main);
         PlayerCore.getInstance().attachToViewGroup(relMain);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         findViewById(R.id.exo_fullscreen_icon).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,9 +87,7 @@ public class FullScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
        makeFullScreen();
-
         PlayerCore.getInstance().onResume(new VideoListener() {
             @Override
             public void onStartPlaying() {
